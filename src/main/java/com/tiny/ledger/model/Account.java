@@ -44,11 +44,12 @@ public class Account {
     private final String currencyCode;
 
     @NonNull
+    @ThreadSafe
     private final LinkedList<Transaction> transactions;
 
     @NonNull
     @NotEmpty
-    Date creationDate;
+    private Date creationDate;
 
     public Transaction addTransactionIfBalancePositive(BigDecimal amount, TransactionType transactionType) {
         synchronized (this) {
@@ -57,9 +58,10 @@ public class Account {
                 throw new TinyLedgerRuntimeException(ErrorCode.BALANCE_NEGATIVE);
             }
             this.balance = newBalance;
+
+            Transaction newTransaction = new Transaction(UUID.randomUUID(), amount, GBP, transactionType, Date.from(Instant.now()));
+            this.transactions.add(newTransaction);
+            return newTransaction;
         }
-        Transaction newTransaction = new Transaction(UUID.randomUUID(), amount, GBP, transactionType, Date.from(Instant.now()));
-        this.transactions.add(newTransaction);
-        return newTransaction;
     }
 }
