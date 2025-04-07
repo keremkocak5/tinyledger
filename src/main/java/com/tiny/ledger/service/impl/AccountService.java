@@ -34,6 +34,9 @@ public class AccountService implements IAccountService {
     @Override
     public AccountResponse createAccount(AccountRequest accountRequest) {
         Account newAccount = new Account(UUID.randomUUID(), accountRequest.accountOwnerName(), BigDecimal.ZERO, GBP, new LinkedList<>(), Date.from(Instant.now()));
+        accountRepository.findById(newAccount.getId()).ifPresent(s -> {
+            throw new TinyLedgerRuntimeException(ErrorCode.DUPLICATE_UUID);
+        });
         accountRepository.saveOrUpdate(newAccount);
         return new AccountResponse(newAccount.getId(), newAccount.getAccountOwnerName(), BigDecimal.ZERO);
     }

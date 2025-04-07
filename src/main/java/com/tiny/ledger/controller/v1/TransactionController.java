@@ -23,7 +23,8 @@ public class TransactionController {
 
     @PostMapping(value = "/account/{accountId}")
     @Operation(summary = "Create a transaction")
-    public TransactionResponse createTransaction(@PathVariable @NonNull UUID accountId, @RequestBody @Valid TransactionRequest transactionRequest) {
+    public TransactionResponse createTransaction(@PathVariable @NonNull UUID accountId,
+                                                 @RequestBody @NonNull @Valid TransactionRequest transactionRequest) {
         return transactionService.createTransaction(accountId, transactionRequest);
     }
 

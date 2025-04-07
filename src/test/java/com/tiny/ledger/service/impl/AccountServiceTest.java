@@ -56,12 +56,20 @@ class AccountServiceTest {
     @Test
     void createAccountShouldReturnAccountWhenRepositoryPersists() {
         when(accountRepository.saveOrUpdate(any())).thenReturn(TestConstants.newAccount);
+        when(accountRepository.findById(any())).thenReturn(Optional.empty());
 
         AccountResponse result = accountService.createAccount(TestConstants.accountRequest);
         // kerem buraya captor ekle
         assertThat(result.accountOwnerName(), is("...................................................................................................."));
         assertThat(result.balance(), is(BigDecimal.ZERO));
         assertNotNull(result.id());
+    }
+
+    @Test
+    void createAccountShouldThrowExceptionWhenTheUserIsVeryUnluckyOrLucky() {
+        when(accountRepository.findById(any())).thenReturn(Optional.of(TestConstants.newAccount));
+
+        assertThrows(TinyLedgerRuntimeException.class, () -> accountService.createAccount(TestConstants.accountRequest));
     }
 
 }
