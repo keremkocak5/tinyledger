@@ -51,7 +51,7 @@ class TransactionControllerTest {
     void getBalanceShouldReturnBalanceResponseWhenAccountServiceSuccessful() throws Exception {
         when(transactionService.getTransactions(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"))).thenReturn(new LinkedList<>(List.of(TestConstants.transactionResponse1, TestConstants.transactionResponse2)));
 
-        MvcResult result = mockMvc.perform(get("/v1/transactions/accountid/3fa85f64-5717-4562-b3fc-2c963f66afa6"))
+        MvcResult result = mockMvc.perform(get("/v1/transactions/account/3fa85f64-5717-4562-b3fc-2c963f66afa6"))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -66,7 +66,7 @@ class TransactionControllerTest {
 
     @Test
     void getBalanceShouldThrowExceptionWhenInputInvalid() throws Exception {
-        mockMvc.perform(get("/v1/transactions/accountid/xxx"))
+        mockMvc.perform(get("/v1/transactions/account/xxx"))
                 .andExpect(status().isBadRequest())
                 .andReturn();
 
@@ -77,7 +77,7 @@ class TransactionControllerTest {
     void createTransactionShouldReturnTransactionResponseWhenTransactionServiceSucceeds() throws Exception {
         when(transactionService.createTransaction(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), TestConstants.transactionRequest)).thenReturn(TestConstants.transactionResponse1);
 
-        MvcResult result = mockMvc.perform(post("/v1/transactions/accountid/3fa85f64-5717-4562-b3fc-2c963f66afa6")
+        MvcResult result = mockMvc.perform(post("/v1/transactions/account/3fa85f64-5717-4562-b3fc-2c963f66afa6")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(packageRequestJacksonTester.write(TestConstants.transactionRequest).getJson()))
                 .andExpect(status().isOk())
@@ -92,7 +92,7 @@ class TransactionControllerTest {
 
     @Test
     void createTransactionShouldThrowExceptionWhenAmountNegative() throws Exception {
-        mockMvc.perform(post("/v1/transactions/accountid/3fa85f64-5717-4562-b3fc-2c963f66afa6")
+        mockMvc.perform(post("/v1/transactions/account/3fa85f64-5717-4562-b3fc-2c963f66afa6")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(packageRequestJacksonTester.write(TestConstants.transactionRequestNegative).getJson()))
                 .andExpect(status().isBadRequest())
@@ -103,7 +103,7 @@ class TransactionControllerTest {
 
     @Test
     void createTransactionShouldThrowExceptionWhenAccountNumberInvalid() throws Exception {
-        mockMvc.perform(post("/v1/transactions/accountid/3fa")
+        mockMvc.perform(post("/v1/transactions/account/3fa")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(packageRequestJacksonTester.write(TestConstants.transactionRequestNegative).getJson()))
                 .andExpect(status().isBadRequest())

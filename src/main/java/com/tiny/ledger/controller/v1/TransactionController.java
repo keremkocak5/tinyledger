@@ -20,13 +20,13 @@ public class TransactionController {
 
     private final ITransactionService transactionService;
 
-    @PostMapping(value = "/accountid/{accountId}")
+    @PostMapping(value = "/account/{accountId}")
     @Operation(summary = "Create a transaction")
     public TransactionResponse createTransaction(@PathVariable UUID accountId, @RequestBody @Valid TransactionRequest transactionRequest) {
         return transactionService.createTransaction(accountId, transactionRequest);
     }
 
-    @GetMapping(value = "/accountid/{accountId}")
+    @GetMapping(value = "/account/{accountId}")
     @Operation(summary = "Get transactions of an account")
     public LinkedList<TransactionResponse> getTransactions(@PathVariable UUID accountId) {
         return transactionService.getTransactions(accountId);
