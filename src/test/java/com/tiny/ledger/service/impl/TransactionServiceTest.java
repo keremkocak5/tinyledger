@@ -37,17 +37,17 @@ class TransactionServiceTest {
 
         TransactionBaseResponse result = transactionService.getTransactions(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"));
 
-        assertThat(result.transactionResponses().size(), is(2));
-        assertThat(result.transactionResponses().get(0).id(), is(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6")));
-        assertNotNull(result.transactionResponses().get(0).transactionDate());
-        assertThat(result.transactionResponses().get(0).transactionType(), is(TransactionType.DEPOSIT));
-        assertThat(result.transactionResponses().get(0).currencyCode(), is("GBP"));
-        assertThat(result.transactionResponses().get(0).amount(), is(BigDecimal.valueOf(999)));
-        assertThat(result.transactionResponses().get(1).id(), is(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa7")));
-        assertNotNull(result.transactionResponses().get(1).transactionDate());
-        assertThat(result.transactionResponses().get(1).transactionType(), is(TransactionType.WITHDRAW));
-        assertThat(result.transactionResponses().get(1).currencyCode(), is("GBP"));
-        assertThat(result.transactionResponses().get(1).amount(), is(BigDecimal.valueOf(1.11)));
+        assertThat(result.transactions().size(), is(2));
+        assertThat(result.transactions().get(0).id(), is(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6")));
+        assertNotNull(result.transactions().get(0).transactionDate());
+        assertThat(result.transactions().get(0).transactionType(), is(TransactionType.DEPOSIT));
+        assertThat(result.transactions().get(0).currencyCode(), is("GBP"));
+        assertThat(result.transactions().get(0).amount(), is(BigDecimal.valueOf(999)));
+        assertThat(result.transactions().get(1).id(), is(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa7")));
+        assertNotNull(result.transactions().get(1).transactionDate());
+        assertThat(result.transactions().get(1).transactionType(), is(TransactionType.WITHDRAW));
+        assertThat(result.transactions().get(1).currencyCode(), is("GBP"));
+        assertThat(result.transactions().get(1).amount(), is(BigDecimal.valueOf(1.11)));
     }
 
     @Test

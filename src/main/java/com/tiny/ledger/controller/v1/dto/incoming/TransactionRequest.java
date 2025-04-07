@@ -7,6 +7,6 @@ import lombok.NonNull;
 import java.math.BigDecimal;
 
 public record TransactionRequest(
-        @NonNull @DecimalMin(value = "0.0") BigDecimal amount,
+        @NonNull @DecimalMin(value = "0.0", inclusive = false) BigDecimal amount,
         @NonNull TransactionType transactionType) {
 }

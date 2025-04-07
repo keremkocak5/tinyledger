@@ -29,6 +29,7 @@ public class TestConstants {
     public static final TransactionRequest transactionRequest = new TransactionRequest(BigDecimal.valueOf(55.444), TransactionType.DEPOSIT);
     public static final TransactionRequest transactionRequestWithdraw = new TransactionRequest(BigDecimal.valueOf(1.1), TransactionType.WITHDRAW);
     public static final TransactionRequest transactionRequestNegative = new TransactionRequest(BigDecimal.valueOf(-55.444), TransactionType.DEPOSIT);
+    public static final TransactionRequest transactionRequestZero = new TransactionRequest(BigDecimal.valueOf(0.0), TransactionType.DEPOSIT);
     public static final TransactionResponse transactionResponse1 = new TransactionResponse(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), BigDecimal.TEN, "GBP", TransactionType.DEPOSIT, Date.from(Instant.now()));
     public static final TransactionResponse transactionResponse2 = new TransactionResponse(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa7"), BigDecimal.ONE, "GBP", TransactionType.WITHDRAW, Date.from(Instant.now()));
     public static final Transaction transaction1 = new Transaction(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), BigDecimal.valueOf(999), "GBP", TransactionType.DEPOSIT, Date.from(Instant.now()));
