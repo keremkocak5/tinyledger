@@ -1,7 +1,7 @@
 package com.tiny.ledger.controller.v1.dto.outgoing;
 
 import jakarta.validation.constraints.NotEmpty;
-import lombok.NonNull;
+import org.springframework.lang.NonNull;
 
 import java.math.BigDecimal;
 import java.util.UUID;

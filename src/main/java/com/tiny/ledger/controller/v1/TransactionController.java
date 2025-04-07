@@ -6,8 +6,8 @@ import com.tiny.ledger.controller.v1.dto.outgoing.TransactionResponse;
 import com.tiny.ledger.service.ITransactionService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.lang.NonNull;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 

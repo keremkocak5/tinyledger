@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.time.Instant;
+import java.time.Clock;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.UUID;
@@ -24,6 +24,7 @@ import static com.tiny.ledger.util.Constants.GBP;
 public class AccountService implements IAccountService {
 
     private final AccountRepository accountRepository;
+    private final Clock clock;
 
     @Override
     public BalanceResponse getBalance(UUID accountId) {
@@ -33,7 +34,7 @@ public class AccountService implements IAccountService {
 
     @Override
     public AccountResponse createAccount(AccountRequest accountRequest) {
-        Account newAccount = new Account(UUID.randomUUID(), accountRequest.accountOwnerName(), BigDecimal.ZERO, GBP, new LinkedList<>(), Date.from(Instant.now()));
+        Account newAccount = new Account(UUID.randomUUID(), accountRequest.accountOwnerName(), BigDecimal.ZERO, GBP, new LinkedList<>(), Date.from(clock.instant()));
         accountRepository.findById(newAccount.getId()).ifPresent(s -> {
             throw new TinyLedgerRuntimeException(ErrorCode.DUPLICATE_UUID);
         });

@@ -4,7 +4,7 @@ import com.tiny.ledger.enums.TransactionType;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
-import lombok.NonNull;
+import org.springframework.lang.NonNull;
 
 import java.math.BigDecimal;
 import java.util.Date;

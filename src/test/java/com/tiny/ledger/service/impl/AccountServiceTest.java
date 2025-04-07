@@ -15,6 +15,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
+import java.time.Clock;
+import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -31,6 +33,8 @@ class AccountServiceTest {
     private AccountService accountService;
     @Mock
     private AccountRepository accountRepository;
+    @Mock
+    private Clock clock;
     @Captor
     private ArgumentCaptor<Account> accountArgumentCaptor;
 
@@ -61,13 +65,14 @@ class AccountServiceTest {
     void createAccountShouldReturnAccountWhenRepositoryPersists() {
         when(accountRepository.saveOrUpdate(any())).thenReturn(TestConstants.NEW_ACCOUNT);
         when(accountRepository.findById(any())).thenReturn(Optional.empty());
+        when(clock.instant()).thenReturn(Instant.ofEpochMilli(1744058699198L));
 
         AccountResponse result = accountService.createAccount(TestConstants.ACCOUNT_REQUEST);
 
         verify(accountRepository).saveOrUpdate(accountArgumentCaptor.capture());
         assertThat(accountArgumentCaptor.getValue().getAccountOwnerName(), is("...................................................................................................."));
         assertThat(accountArgumentCaptor.getValue().getId(), is(result.id()));
-        assertNotNull(accountArgumentCaptor.getValue().getCreationDate());
+        assertThat(accountArgumentCaptor.getValue().getCreationDate().toInstant().toString(), is("2025-04-07T20:44:59.198Z"));
         assertThat(accountArgumentCaptor.getValue().getCurrencyCode(), is("GBP"));
         assertThat(accountArgumentCaptor.getValue().getBalance(), is(BigDecimal.ZERO));
         assertThat(accountArgumentCaptor.getValue().getTransactions().size(), is(0));
@@ -79,6 +84,7 @@ class AccountServiceTest {
 
     @Test
     void createAccountShouldThrowExceptionWhenTheUserIsVeryUnluckyOrLucky() {
+        when(clock.instant()).thenReturn(Instant.now());
         when(accountRepository.findById(any())).thenReturn(Optional.of(TestConstants.NEW_ACCOUNT));
 
         assertThrows(TinyLedgerRuntimeException.class, () -> accountService.createAccount(TestConstants.ACCOUNT_REQUEST));

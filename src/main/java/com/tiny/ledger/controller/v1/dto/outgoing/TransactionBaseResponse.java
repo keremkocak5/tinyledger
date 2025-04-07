@@ -1,6 +1,7 @@
 package com.tiny.ledger.controller.v1.dto.outgoing;
 
-import lombok.NonNull;
+
+import org.springframework.lang.NonNull;
 
 import java.util.LinkedList;
 
