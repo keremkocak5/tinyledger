@@ -11,7 +11,7 @@ import java.util.Optional;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
-@EnabledIf(expression = "#{environment.acceptsProfiles('local')}", reason = "Integration test should run only on local environment!")
+@EnabledIf(expression = "#{environment.acceptsProfiles('local', 'default')}", reason = "Integration test should run only on local environment!")
 @SpringBootTest
 class AccountRepositoryIntegrationTest {
 
