@@ -41,11 +41,12 @@ class TransactionControllerTest {
 
     private MockMvc mockMvc;
     private JacksonTester<TransactionRequest> packageRequestJacksonTester;
+    private final static ObjectMapper objectMapper = new ObjectMapper();
 
     @BeforeEach
     public void setup() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(transactionController).setControllerAdvice(GlobalExceptionHandler.class).build();
-        JacksonTester.initFields(this, new ObjectMapper());
+        JacksonTester.initFields(this, objectMapper);
     }
 
     @Test

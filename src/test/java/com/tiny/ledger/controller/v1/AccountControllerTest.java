@@ -7,6 +7,7 @@ import com.tiny.ledger.controller.v1.dto.incoming.AccountRequest;
 import com.tiny.ledger.controller.v1.dto.outgoing.AccountResponse;
 import com.tiny.ledger.service.impl.AccountService;
 import com.tiny.ledger.util.TestConstants;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -40,11 +41,12 @@ class AccountControllerTest {
 
     private MockMvc mockMvc;
     private JacksonTester<AccountRequest> packageRequestJacksonTester;
+    private final static ObjectMapper objectMapper = new ObjectMapper();
 
     @BeforeEach
     public void setup() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(accountController).setControllerAdvice(GlobalExceptionHandler.class).build();
-        JacksonTester.initFields(this, new ObjectMapper());
+        JacksonTester.initFields(this, objectMapper);
     }
 
     @Test
