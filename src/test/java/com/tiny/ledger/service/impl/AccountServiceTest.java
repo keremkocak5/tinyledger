@@ -3,10 +3,13 @@ package com.tiny.ledger.service.impl;
 import com.tiny.ledger.controller.v1.dto.outgoing.AccountResponse;
 import com.tiny.ledger.controller.v1.dto.outgoing.BalanceResponse;
 import com.tiny.ledger.exception.TinyLedgerRuntimeException;
+import com.tiny.ledger.model.Account;
 import com.tiny.ledger.repository.AccountRepository;
 import com.tiny.ledger.util.TestConstants;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -19,8 +22,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class AccountServiceTest {
@@ -29,6 +31,8 @@ class AccountServiceTest {
     private AccountService accountService;
     @Mock
     private AccountRepository accountRepository;
+    @Captor
+    private ArgumentCaptor<Account> accountArgumentCaptor;
 
     @Test
     void getBalanceShouldReturnBalanceWhenAccountFound() {
@@ -59,7 +63,15 @@ class AccountServiceTest {
         when(accountRepository.findById(any())).thenReturn(Optional.empty());
 
         AccountResponse result = accountService.createAccount(TestConstants.ACCOUNT_REQUEST);
-        // kerem buraya captor ekle
+
+        verify(accountRepository).saveOrUpdate(accountArgumentCaptor.capture());
+        assertThat(accountArgumentCaptor.getValue().getAccountOwnerName(), is("...................................................................................................."));
+        assertThat(accountArgumentCaptor.getValue().getId(), is(result.id()));
+        assertNotNull(accountArgumentCaptor.getValue().getCreationDate());
+        assertThat(accountArgumentCaptor.getValue().getCurrencyCode(), is("GBP"));
+        assertThat(accountArgumentCaptor.getValue().getBalance(), is(BigDecimal.ZERO));
+        assertThat(accountArgumentCaptor.getValue().getTransactions().size(), is(0));
+
         assertThat(result.accountOwnerName(), is("...................................................................................................."));
         assertThat(result.balance(), is(BigDecimal.ZERO));
         assertNotNull(result.id());

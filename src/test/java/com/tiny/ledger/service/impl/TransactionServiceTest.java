@@ -58,7 +58,7 @@ class TransactionServiceTest {
     }
 
     @Test
-    void createTransactionShouldReturnTransactionResponseWhenBalanceIsPositive() {
+    void createTransactionShouldReturnTransactionResponseWhenBalanceLeadsPositive() {
         Account account = new Account(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), "Kerem Kocak", BigDecimal.valueOf(20.445), "GBP", new LinkedList<>(List.of(TestConstants.TRANSACTION_1, TestConstants.TRANSACTION_2)), Date.from(Instant.now()));
         when(accountRepository.findById(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"))).thenReturn(Optional.of(account));
 
@@ -76,7 +76,7 @@ class TransactionServiceTest {
     }
 
     @Test
-    void createTransactionShouldReturnTransactionResponseWhenBalanceIsNegative() {
+    void createTransactionShouldReturnTransactionResponseWhenBalanceLeadsNegative() {
         Account account = new Account(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), "Kerem Kocak", BigDecimal.ONE, "GBP", new LinkedList<>(List.of(TestConstants.TRANSACTION_1, TestConstants.TRANSACTION_2)), Date.from(Instant.now()));
         when(accountRepository.findById(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"))).thenReturn(Optional.of(account));
 
@@ -87,7 +87,7 @@ class TransactionServiceTest {
     }
 
     @Test
-    void createTransactionShouldReturnTransactionResponseWhenBalanceIsZero() {
+    void createTransactionShouldReturnTransactionResponseWhenBalanceLeadsZero() {
         Account account = new Account(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), "Kerem Kocak", BigDecimal.valueOf(1.1), "GBP", new LinkedList<>(List.of(TestConstants.TRANSACTION_1, TestConstants.TRANSACTION_2)), Date.from(Instant.now()));
         when(accountRepository.findById(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"))).thenReturn(Optional.of(account));
 

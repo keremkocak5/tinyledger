@@ -31,6 +31,7 @@ public class Account {
 
     @NotEmpty
     @NonNull
+    @Size(min = 1, max = 100)
     private final String accountOwnerName;
 
     @DecimalMin(value = "0.0")
