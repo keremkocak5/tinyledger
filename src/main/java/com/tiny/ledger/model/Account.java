@@ -35,12 +35,11 @@ public class Account {
     private final String accountOwnerName;
 
     @DecimalMin(value = "0.0")
-    @ThreadSafe
     @NonNull
+    @ThreadSafe
     private BigDecimal balance;
 
     @Size(min = 1, max = 4)
-    @NotEmpty
     @NonNull
     private final String currencyCode;
 
@@ -50,7 +49,7 @@ public class Account {
 
     @NonNull
     @NotEmpty
-    private Date creationDate;
+    private final Date creationDate;
 
     public Transaction addTransactionIfBalancePositive(BigDecimal amount, TransactionType transactionType) {
         synchronized (this) {

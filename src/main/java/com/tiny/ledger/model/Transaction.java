@@ -12,8 +12,8 @@ import java.util.UUID;
 
 public record Transaction(@NonNull @NotEmpty UUID id,
                           @NonNull @NotEmpty UUID accountId,
-                          @NonNull @NotEmpty @DecimalMin(value = "0.0") BigDecimal amount,
-                          @NonNull @NotEmpty @Size(min = 1, max = 4) String currencyCode,
+                          @NonNull @DecimalMin(value = "0.0", inclusive = false) BigDecimal amount,
+                          @NonNull @Size(min = 1, max = 4) String currencyCode,
                           @NonNull @NotEmpty TransactionType transactionType,
                           @NonNull @NotEmpty Date creationDate) {
 }
