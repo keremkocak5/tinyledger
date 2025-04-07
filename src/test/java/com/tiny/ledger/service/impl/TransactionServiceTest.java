@@ -76,7 +76,7 @@ class TransactionServiceTest {
     }
 
     @Test
-    void createTransactionShouldReturnTransactionResponseWhenBalanceLeadsNegative() {
+    void createTransactionShouldThrowExceptionWhenBalanceLeadsNegative() {
         Account account = new Account(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), "Kerem Kocak", BigDecimal.ONE, "GBP", new LinkedList<>(List.of(TestConstants.TRANSACTION_1, TestConstants.TRANSACTION_2)), Date.from(Instant.now()));
         when(accountRepository.findById(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"))).thenReturn(Optional.of(account));
 
@@ -101,7 +101,7 @@ class TransactionServiceTest {
     }
 
     @Test
-    void createTransactionShouldThrowExceptionResponseWhenAccountNotFound() {
+    void createTransactionShouldThrowExceptionWhenAccountNotFound() {
         when(accountRepository.findById(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"))).thenReturn(Optional.empty());
 
         assertThrows(TinyLedgerRuntimeException.class, () -> transactionService.createTransaction(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), TestConstants.TRANSACTION_REQUEST_WITHDRAW));

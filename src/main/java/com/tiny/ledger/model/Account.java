@@ -9,7 +9,6 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import org.hibernate.validator.internal.util.stereotypes.ThreadSafe;
 import org.springframework.lang.NonNull;
 
 import java.math.BigDecimal;
@@ -36,7 +35,6 @@ public class Account {
 
     @DecimalMin(value = "0.0")
     @NonNull
-    @ThreadSafe
     private BigDecimal balance;
 
     @Size(min = 1, max = 4)
@@ -44,7 +42,6 @@ public class Account {
     private final String currencyCode;
 
     @NonNull
-    @ThreadSafe
     private final LinkedList<Transaction> transactions;
 
     @NonNull
