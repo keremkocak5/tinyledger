@@ -9,6 +9,7 @@ import com.tiny.ledger.model.Account;
 import com.tiny.ledger.repository.AccountRepository;
 import com.tiny.ledger.service.IAccountService;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.validator.internal.util.stereotypes.ThreadSafe;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -35,6 +36,6 @@ public class AccountService implements IAccountService {
     public AccountResponse createAccount(AccountRequest accountRequest) {
         Account newAccount = new Account(UUID.randomUUID(), accountRequest.accountOwnerName(), BigDecimal.ZERO, GBP, new LinkedList<>(), Date.from(Instant.now()));
         accountRepository.saveOrUpdate(newAccount);
-        return new AccountResponse(newAccount.getId(), newAccount.getAccountOwnerName());
+        return new AccountResponse(newAccount.getId(), newAccount.getAccountOwnerName(), BigDecimal.ZERO);
     }
 }

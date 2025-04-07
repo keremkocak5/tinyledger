@@ -60,6 +60,7 @@ class AccountServiceTest {
         AccountResponse result = accountService.createAccount(TestConstants.accountRequest);
         // kerem buraya captor ekle
         assertThat(result.accountOwnerName(), is("...................................................................................................."));
+        assertThat(result.balance(), is(BigDecimal.ZERO));
         assertNotNull(result.id());
     }
 

@@ -3,7 +3,8 @@ package com.tiny.ledger.model;
 import com.tiny.ledger.enums.TransactionType;
 import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit.jupiter.DisabledIf;
 
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -14,7 +15,8 @@ import java.util.UUID;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
-@ActiveProfiles(profiles = "local")
+@DisabledIf(expression = "#{environment.acceptsProfiles('prod')}", reason = "Test should not run in production due to performance.")
+@SpringBootTest
 class AccountTest {
 
     private final int ITERATION_COUNT = 2_000_000;

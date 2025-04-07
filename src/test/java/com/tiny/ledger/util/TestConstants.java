@@ -24,7 +24,7 @@ public class TestConstants {
     public static final AccountRequest accountRequestNoName = new AccountRequest("");
     public static final AccountRequest accountRequestLongName = new AccountRequest(".".repeat(101));
     public static final AccountRequest accountRequest = new AccountRequest(".".repeat(100));
-    public static final AccountResponse accountResponse = new AccountResponse(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), "Kerem Kocak");
+    public static final AccountResponse accountResponse = new AccountResponse(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), "Kerem Kocak", BigDecimal.ZERO);
     public static final BalanceResponse balanceResponse = new BalanceResponse(BigDecimal.TEN);
     public static final TransactionRequest transactionRequest = new TransactionRequest(BigDecimal.valueOf(55.444), TransactionType.DEPOSIT);
     public static final TransactionRequest transactionRequestWithdraw = new TransactionRequest(BigDecimal.valueOf(1.1), TransactionType.WITHDRAW);
