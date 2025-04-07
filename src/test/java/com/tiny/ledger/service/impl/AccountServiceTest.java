@@ -32,7 +32,7 @@ class AccountServiceTest {
 
     @Test
     void getBalanceShouldReturnBalanceWhenAccountFound() {
-        when(accountRepository.findById(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"))).thenReturn(Optional.of(TestConstants.newAccount));
+        when(accountRepository.findById(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"))).thenReturn(Optional.of(TestConstants.NEW_ACCOUNT));
 
         BalanceResponse result = accountService.getBalance(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"));
 
@@ -55,10 +55,10 @@ class AccountServiceTest {
 
     @Test
     void createAccountShouldReturnAccountWhenRepositoryPersists() {
-        when(accountRepository.saveOrUpdate(any())).thenReturn(TestConstants.newAccount);
+        when(accountRepository.saveOrUpdate(any())).thenReturn(TestConstants.NEW_ACCOUNT);
         when(accountRepository.findById(any())).thenReturn(Optional.empty());
 
-        AccountResponse result = accountService.createAccount(TestConstants.accountRequest);
+        AccountResponse result = accountService.createAccount(TestConstants.ACCOUNT_REQUEST);
         // kerem buraya captor ekle
         assertThat(result.accountOwnerName(), is("...................................................................................................."));
         assertThat(result.balance(), is(BigDecimal.ZERO));
@@ -67,9 +67,9 @@ class AccountServiceTest {
 
     @Test
     void createAccountShouldThrowExceptionWhenTheUserIsVeryUnluckyOrLucky() {
-        when(accountRepository.findById(any())).thenReturn(Optional.of(TestConstants.newAccount));
+        when(accountRepository.findById(any())).thenReturn(Optional.of(TestConstants.NEW_ACCOUNT));
 
-        assertThrows(TinyLedgerRuntimeException.class, () -> accountService.createAccount(TestConstants.accountRequest));
+        assertThrows(TinyLedgerRuntimeException.class, () -> accountService.createAccount(TestConstants.ACCOUNT_REQUEST));
     }
 
 }

@@ -33,7 +33,7 @@ class TransactionServiceTest {
 
     @Test
     void getTransactionsShouldReturnTransactionsIfAccountFound() {
-        when(accountRepository.findById(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"))).thenReturn(Optional.of(TestConstants.bigAccount));
+        when(accountRepository.findById(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"))).thenReturn(Optional.of(TestConstants.BIG_ACCOUNT));
 
         TransactionBaseResponse result = transactionService.getTransactions(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"));
 
@@ -59,10 +59,10 @@ class TransactionServiceTest {
 
     @Test
     void createTransactionShouldReturnTransactionResponseWhenBalanceIsPositive() {
-        Account account = new Account(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), "Kerem Kocak", BigDecimal.valueOf(20.445), "GBP", new LinkedList<>(List.of(TestConstants.transaction1, TestConstants.transaction2)), Date.from(Instant.now()));
+        Account account = new Account(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), "Kerem Kocak", BigDecimal.valueOf(20.445), "GBP", new LinkedList<>(List.of(TestConstants.TRANSACTION_1, TestConstants.TRANSACTION_2)), Date.from(Instant.now()));
         when(accountRepository.findById(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"))).thenReturn(Optional.of(account));
 
-        TransactionResponse result = transactionService.createTransaction(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), TestConstants.transactionRequest);
+        TransactionResponse result = transactionService.createTransaction(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), TestConstants.TRANSACTION_REQUEST_DEPOSIT);
 
         assertNotNull(result);
         assertThat(result.amount(), is(BigDecimal.valueOf(55.444)));
@@ -77,10 +77,10 @@ class TransactionServiceTest {
 
     @Test
     void createTransactionShouldReturnTransactionResponseWhenBalanceIsNegative() {
-        Account account = new Account(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), "Kerem Kocak", BigDecimal.ONE, "GBP", new LinkedList<>(List.of(TestConstants.transaction1, TestConstants.transaction2)), Date.from(Instant.now()));
+        Account account = new Account(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), "Kerem Kocak", BigDecimal.ONE, "GBP", new LinkedList<>(List.of(TestConstants.TRANSACTION_1, TestConstants.TRANSACTION_2)), Date.from(Instant.now()));
         when(accountRepository.findById(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"))).thenReturn(Optional.of(account));
 
-        assertThrows(TinyLedgerRuntimeException.class, () -> transactionService.createTransaction(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), TestConstants.transactionRequestWithdraw));
+        assertThrows(TinyLedgerRuntimeException.class, () -> transactionService.createTransaction(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), TestConstants.TRANSACTION_REQUEST_WITHDRAW));
 
         assertThat(account.getTransactions().size(), is(2));
         assertThat(account.getBalance(), is(BigDecimal.valueOf(1)));
@@ -88,10 +88,10 @@ class TransactionServiceTest {
 
     @Test
     void createTransactionShouldReturnTransactionResponseWhenBalanceIsZero() {
-        Account account = new Account(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), "Kerem Kocak", BigDecimal.valueOf(1.1), "GBP", new LinkedList<>(List.of(TestConstants.transaction1, TestConstants.transaction2)), Date.from(Instant.now()));
+        Account account = new Account(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), "Kerem Kocak", BigDecimal.valueOf(1.1), "GBP", new LinkedList<>(List.of(TestConstants.TRANSACTION_1, TestConstants.TRANSACTION_2)), Date.from(Instant.now()));
         when(accountRepository.findById(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"))).thenReturn(Optional.of(account));
 
-        TransactionResponse result = transactionService.createTransaction(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), TestConstants.transactionRequestWithdraw);
+        TransactionResponse result = transactionService.createTransaction(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), TestConstants.TRANSACTION_REQUEST_WITHDRAW);
 
         assertThat(account.getTransactions().size(), is(3));
         assertThat(account.getBalance(), is(BigDecimal.valueOf(0.0)));
@@ -104,7 +104,7 @@ class TransactionServiceTest {
     void createTransactionShouldThrowExceptionResponseWhenAccountNotFound() {
         when(accountRepository.findById(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"))).thenReturn(Optional.empty());
 
-        assertThrows(TinyLedgerRuntimeException.class, () -> transactionService.createTransaction(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), TestConstants.transactionRequestWithdraw));
+        assertThrows(TinyLedgerRuntimeException.class, () -> transactionService.createTransaction(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), TestConstants.TRANSACTION_REQUEST_WITHDRAW));
     }
 
 }

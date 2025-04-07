@@ -49,7 +49,7 @@ class AccountControllerTest {
 
     @Test
     void getBalanceShouldReturnBalanceResponseWhenAccountServiceSuccessful() throws Exception {
-        when(accountService.getBalance(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"))).thenReturn(TestConstants.balanceResponse);
+        when(accountService.getBalance(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"))).thenReturn(TestConstants.BALANCE_RESPONSE);
 
         mockMvc.perform(get("/v1/accounts/id/3fa85f64-5717-4562-b3fc-2c963f66afa6/balance"))
                 .andExpect(status().isOk())
@@ -81,26 +81,26 @@ class AccountControllerTest {
 
     @Test
     void createAccountShouldReturnAccountResponseWhenAccountServiceSuccessful() throws Exception {
-        when(accountService.createAccount(TestConstants.accountRequest)).thenReturn(TestConstants.accountResponse);
+        when(accountService.createAccount(TestConstants.ACCOUNT_REQUEST)).thenReturn(TestConstants.ACCOUNT_RESPONSE);
 
         MvcResult result = mockMvc.perform(post("/v1/accounts/")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(packageRequestJacksonTester.write(TestConstants.accountRequest).getJson()))
+                        .content(packageRequestJacksonTester.write(TestConstants.ACCOUNT_REQUEST).getJson()))
                 .andExpect(status().isOk())
                 .andReturn();
 
         ObjectMapper objectMapper = new ObjectMapper();
-        AccountResponse accountResponse = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<AccountResponse>() {
+        AccountResponse accountResponse = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {
         });
-        assertThat(accountResponse, is(TestConstants.accountResponse));
-        verify(accountService, times(1)).createAccount(TestConstants.accountRequest);
+        assertThat(accountResponse, is(TestConstants.ACCOUNT_RESPONSE));
+        verify(accountService, times(1)).createAccount(TestConstants.ACCOUNT_REQUEST);
     }
 
     @Test
     void createAccountShouldReturnExceptionResponseWhenNameTooLong() throws Exception {
         mockMvc.perform(post("/v1/accounts/")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(packageRequestJacksonTester.write(TestConstants.accountRequestLongName).getJson()))
+                        .content(packageRequestJacksonTester.write(TestConstants.ACCOUNT_REQUEST_LONG_NAME).getJson()))
                 .andExpect(status().isBadRequest())
                 .andReturn();
 
@@ -111,7 +111,7 @@ class AccountControllerTest {
     void createAccountShouldReturnExceptionResponseWhenNameTooShort() throws Exception {
         mockMvc.perform(post("/v1/accounts/")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(packageRequestJacksonTester.write(TestConstants.accountRequestNoName).getJson()))
+                        .content(packageRequestJacksonTester.write(TestConstants.ACCOUNT_REQUEST_NO_NAME).getJson()))
                 .andExpect(status().isBadRequest())
                 .andReturn();
 

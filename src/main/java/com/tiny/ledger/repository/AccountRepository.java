@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Repository
 public class AccountRepository {
 
-    private final Map<UUID, Account> database = new ConcurrentHashMap<>();
+    private static final Map<UUID, Account> database = new ConcurrentHashMap<>();
 
     public Account saveOrUpdate(Account account) {
         database.put(account.getId(), account);

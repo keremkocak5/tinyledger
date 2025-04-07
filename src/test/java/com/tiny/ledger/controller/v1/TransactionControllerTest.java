@@ -50,18 +50,18 @@ class TransactionControllerTest {
 
     @Test
     void getBalanceShouldReturnBalanceResponseWhenAccountServiceSuccessful() throws Exception {
-        when(transactionService.getTransactions(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"))).thenReturn(new TransactionBaseResponse(new LinkedList<>(List.of(TestConstants.transactionResponse1, TestConstants.transactionResponse2))));
+        when(transactionService.getTransactions(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"))).thenReturn(new TransactionBaseResponse(new LinkedList<>(List.of(TestConstants.TRANSACTION_RESPONSE_1, TestConstants.TRANSACTION_RESPONSE_2))));
 
         MvcResult result = mockMvc.perform(get("/v1/transactions/account/3fa85f64-5717-4562-b3fc-2c963f66afa6"))
                 .andExpect(status().isOk())
                 .andReturn();
 
         ObjectMapper objectMapper = new ObjectMapper();
-        TransactionBaseResponse transactionResponse = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<TransactionBaseResponse>() {
+        TransactionBaseResponse transactionResponse = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {
         });
         assertThat(transactionResponse.transactions().size(), is(2));
-        assertThat(transactionResponse.transactions().get(0), is(TestConstants.transactionResponse1));
-        assertThat(transactionResponse.transactions().get(1), is(TestConstants.transactionResponse2));
+        assertThat(transactionResponse.transactions().get(0), is(TestConstants.TRANSACTION_RESPONSE_1));
+        assertThat(transactionResponse.transactions().get(1), is(TestConstants.TRANSACTION_RESPONSE_2));
         verify(transactionService, times(1)).getTransactions(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"));
     }
 
@@ -76,26 +76,26 @@ class TransactionControllerTest {
 
     @Test
     void createTransactionShouldReturnTransactionResponseWhenTransactionServiceSucceeds() throws Exception {
-        when(transactionService.createTransaction(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), TestConstants.transactionRequest)).thenReturn(TestConstants.transactionResponse1);
+        when(transactionService.createTransaction(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), TestConstants.TRANSACTION_REQUEST_DEPOSIT)).thenReturn(TestConstants.TRANSACTION_RESPONSE_1);
 
         MvcResult result = mockMvc.perform(post("/v1/transactions/account/3fa85f64-5717-4562-b3fc-2c963f66afa6")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(packageRequestJacksonTester.write(TestConstants.transactionRequest).getJson()))
+                        .content(packageRequestJacksonTester.write(TestConstants.TRANSACTION_REQUEST_DEPOSIT).getJson()))
                 .andExpect(status().isOk())
                 .andReturn();
 
         ObjectMapper objectMapper = new ObjectMapper();
-        TransactionResponse transactionResponse = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<TransactionResponse>() {
+        TransactionResponse transactionResponse = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {
         });
-        assertThat(transactionResponse, is(TestConstants.transactionResponse1));
-        verify(transactionService, times(1)).createTransaction(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), TestConstants.transactionRequest);
+        assertThat(transactionResponse, is(TestConstants.TRANSACTION_RESPONSE_1));
+        verify(transactionService, times(1)).createTransaction(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), TestConstants.TRANSACTION_REQUEST_DEPOSIT);
     }
 
     @Test
     void createTransactionShouldThrowExceptionWhenAmountNegative() throws Exception {
         mockMvc.perform(post("/v1/transactions/account/3fa85f64-5717-4562-b3fc-2c963f66afa6")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(packageRequestJacksonTester.write(TestConstants.transactionRequestNegative).getJson()))
+                        .content(packageRequestJacksonTester.write(TestConstants.TRANSACTION_REQUEST_NEGATIVE).getJson()))
                 .andExpect(status().isBadRequest())
                 .andReturn();
 
@@ -106,7 +106,7 @@ class TransactionControllerTest {
     void createTransactionShouldThrowExceptionWhenAmountZero() throws Exception {
         mockMvc.perform(post("/v1/transactions/account/3fa85f64-5717-4562-b3fc-2c963f66afa6")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(packageRequestJacksonTester.write(TestConstants.transactionRequestZero).getJson()))
+                        .content(packageRequestJacksonTester.write(TestConstants.TRANSACTION_REQUEST_ZERO).getJson()))
                 .andExpect(status().isBadRequest())
                 .andReturn();
 
@@ -117,7 +117,7 @@ class TransactionControllerTest {
     void createTransactionShouldThrowExceptionWhenAccountNumberInvalid() throws Exception {
         mockMvc.perform(post("/v1/transactions/account/3fa")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(packageRequestJacksonTester.write(TestConstants.transactionRequestNegative).getJson()))
+                        .content(packageRequestJacksonTester.write(TestConstants.TRANSACTION_REQUEST_NEGATIVE).getJson()))
                 .andExpect(status().isBadRequest())
                 .andReturn();
 
