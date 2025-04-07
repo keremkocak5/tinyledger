@@ -39,7 +39,7 @@ public class TransactionService implements ITransactionService {
     }
 
     private static TransactionResponse getTransactionResponse(Transaction transaction) {
-        return new TransactionResponse(transaction.id(), transaction.amount(), transaction.currencyCode(), transaction.transactionType(), transaction.transactionDate());
+        return new TransactionResponse(transaction.id(), transaction.amount(), transaction.currencyCode(), transaction.transactionType(), transaction.creationDate());
     }
 
     private Account getOrElseThrow(UUID accountId) {

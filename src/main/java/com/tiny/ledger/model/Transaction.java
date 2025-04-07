@@ -15,5 +15,5 @@ public record Transaction(@NonNull @NotEmpty UUID id,
                           @NonNull @NotEmpty @DecimalMin(value = "0.0") BigDecimal amount,
                           @NonNull @NotEmpty @Size(min = 1, max = 4) String currencyCode,
                           @NonNull @NotEmpty TransactionType transactionType,
-                          @NonNull @NotEmpty Date transactionDate) {
+                          @NonNull @NotEmpty Date creationDate) {
 }

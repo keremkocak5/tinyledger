@@ -302,7 +302,7 @@ GET /v1/accounts/id/123e4567-e89b-12d3-a456-426614174000/balance
 ```json
 {
   "type": "object",
-  "required": ["amount", "currencyCode", "id", "transactionDate", "transactionType"],
+  "required": ["amount", "currencyCode", "id", "creationDate", "transactionType"],
   "properties": {
     "id": {
       "type": "string",
