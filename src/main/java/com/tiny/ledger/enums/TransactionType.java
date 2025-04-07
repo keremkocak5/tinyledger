@@ -7,11 +7,11 @@ import java.util.function.BiFunction;
 
 public enum TransactionType {
 
-    DEPOSIT((a, b) -> a.add(b)),
-    WITHDRAW((a, b) -> a.subtract(b));
+    DEPOSIT(BigDecimal::add),
+    WITHDRAW(BigDecimal::subtract);
 
     @Getter
-    private BiFunction<BigDecimal, BigDecimal, BigDecimal> accountBalanceOperator;
+    private final BiFunction<BigDecimal, BigDecimal, BigDecimal> accountBalanceOperator;
 
     TransactionType(BiFunction<BigDecimal, BigDecimal, BigDecimal> accountBalanceOperator) {
         this.accountBalanceOperator = accountBalanceOperator;

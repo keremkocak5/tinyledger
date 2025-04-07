@@ -33,7 +33,7 @@ public class TransactionService implements ITransactionService {
         Account account = getOrElseThrow(accountId);
         return account.getTransactions()
                 .stream()
-                .map(trans -> getTransactionResponse(trans))
+                .map(TransactionService::getTransactionResponse)
                 .collect(Collectors.toCollection(LinkedList::new));
     }
 
