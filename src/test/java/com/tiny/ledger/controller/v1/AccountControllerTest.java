@@ -51,7 +51,7 @@ class AccountControllerTest {
     void getBalanceShouldReturnBalanceResponseWhenAccountServiceSuccessful() throws Exception {
         when(accountService.getBalance(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"))).thenReturn(TestConstants.balanceResponse);
 
-        mockMvc.perform(get("/v1/accounts/balance/id/3fa85f64-5717-4562-b3fc-2c963f66afa6"))
+        mockMvc.perform(get("/v1/accounts/id/3fa85f64-5717-4562-b3fc-2c963f66afa6/balance"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("{\"balance\":10}")))
                 .andReturn();
@@ -63,7 +63,7 @@ class AccountControllerTest {
     void getBalanceShouldThrowExceptionWhenAccountServiceNotSuccessful() throws Exception {
         when(accountService.getBalance(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"))).thenThrow(new RuntimeException("bad."));
 
-        mockMvc.perform(get("/v1/accounts/balance/id/3fa85f64-5717-4562-b3fc-2c963f66afa6"))
+        mockMvc.perform(get("/v1/accounts/id/3fa85f64-5717-4562-b3fc-2c963f66afa6/balance"))
                 .andExpect(status().isInternalServerError())
                 .andReturn();
 
@@ -72,7 +72,7 @@ class AccountControllerTest {
 
     @Test
     void getBalanceShouldReturnBalanceResponseWhenInputInvalid() throws Exception {
-        mockMvc.perform(get("/v1/accounts/balance/id/hh"))
+        mockMvc.perform(get("/v1/accounts/id/hh/balance"))
                 .andExpect(status().isBadRequest())
                 .andReturn();
 
