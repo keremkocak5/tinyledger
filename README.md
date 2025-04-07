@@ -12,9 +12,11 @@ Make sure you have Java 17, Maven, and Docker installed on your device. Then run
 
 ```
 mvn clean package
-
+```
+```
 docker build -t tinyledger .
-
+```
+```
 docker run -p 8080:8080 tinyledger
 ```
 
