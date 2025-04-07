@@ -26,7 +26,7 @@ public class TransactionController {
         return transactionService.createTransaction(transactionRequest);
     }
 
-    @GetMapping(value = "/id/{accountId}")
+    @GetMapping(value = "/accountid/{accountId}")
     @Operation(summary = "Get transactions of an account")
     public LinkedList<TransactionResponse> getTransactions(@PathVariable UUID accountId) {
         return transactionService.getTransactions(accountId);
