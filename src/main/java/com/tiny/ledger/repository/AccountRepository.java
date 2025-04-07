@@ -19,7 +19,7 @@ public class AccountRepository {
     }
 
     public Optional<Account> findById(UUID id) {
-        return Optional.ofNullable(database.getOrDefault(id, null));
+        return Optional.ofNullable(database.get(id));
     }
 
 }
