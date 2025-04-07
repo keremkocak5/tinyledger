@@ -17,7 +17,7 @@ import static org.hamcrest.Matchers.is;
 
 @DisabledIf(expression = "#{environment.acceptsProfiles('prod')}", reason = "Test should not run in production due to performance.")
 @SpringBootTest
-class AccountTest {
+class AccountThreadSafetyTest {
 
     private final int ITERATION_COUNT = 2_000_000;
 
