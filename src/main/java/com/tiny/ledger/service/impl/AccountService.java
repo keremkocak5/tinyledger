@@ -34,11 +34,19 @@ public class AccountService implements IAccountService {
 
     @Override
     public AccountResponse createAccount(AccountRequest accountRequest) {
-        Account newAccount = new Account(UUID.randomUUID(), accountRequest.accountOwnerName(), BigDecimal.ZERO, GBP, new LinkedList<>(), Date.from(clock.instant()));
-        accountRepository.findById(newAccount.getId()).ifPresent(s -> {
-            throw new TinyLedgerRuntimeException(ErrorCode.DUPLICATE_UUID);
-        });
+        Account newAccount = generateNewAccountEntity(accountRequest);
+        throwIfUUIDDuplicate(newAccount.getId()); // user should be very unlucky for this to occur.
         accountRepository.saveOrUpdate(newAccount);
         return new AccountResponse(newAccount.getId(), newAccount.getAccountOwnerName(), BigDecimal.ZERO);
+    }
+
+    private void throwIfUUIDDuplicate(UUID generatedAccountsUUID) {
+        accountRepository.findById(generatedAccountsUUID).ifPresent(s -> {
+            throw new TinyLedgerRuntimeException(ErrorCode.DUPLICATE_UUID);
+        });
+    }
+
+    private Account generateNewAccountEntity(AccountRequest accountRequest) {
+        return new Account(UUID.randomUUID(), accountRequest.accountOwnerName(), BigDecimal.ZERO, GBP, new LinkedList<>(), Date.from(clock.instant()));
     }
 }

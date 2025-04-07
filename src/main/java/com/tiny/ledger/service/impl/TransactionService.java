@@ -24,15 +24,15 @@ public class TransactionService implements ITransactionService {
 
     @Override
     public TransactionResponse createTransaction(UUID accountId, TransactionRequest transactionRequest) {
-        Account account = getOrElseThrow(accountId);
-        Transaction transaction = account.addTransactionIfBalancePositive(transactionRequest.amount(), transactionRequest.transactionType());
-        return getTransactionResponse(transaction);
+        Account existingAccount = findAccountOrElseThrow(accountId);
+        Transaction addedTransaction = existingAccount.addTransactionIfBalancePositive(transactionRequest.amount(), transactionRequest.transactionType());
+        return getTransactionResponse(addedTransaction);
     }
 
     @Override
     public TransactionBaseResponse getTransactions(UUID accountId) {
-        Account account = getOrElseThrow(accountId);
-        return new TransactionBaseResponse(account.getTransactions()
+        Account existingAccount = findAccountOrElseThrow(accountId);
+        return new TransactionBaseResponse(existingAccount.getTransactions()
                 .stream()
                 .map(TransactionService::getTransactionResponse)
                 .collect(Collectors.toCollection(LinkedList::new)));
@@ -42,7 +42,7 @@ public class TransactionService implements ITransactionService {
         return new TransactionResponse(transaction.id(), transaction.amount(), transaction.currencyCode(), transaction.transactionType(), transaction.creationDate());
     }
 
-    private Account getOrElseThrow(UUID accountId) {
+    private Account findAccountOrElseThrow(UUID accountId) {
         return accountRepository.findById(accountId).orElseThrow(() -> new TinyLedgerRuntimeException(ErrorCode.ACCOUNT_NOT_FOUND));
     }
 
