@@ -1,5 +1,6 @@
 package com.tiny.ledger.service.impl;
 
+import com.tiny.ledger.controller.v1.dto.outgoing.TransactionBaseResponse;
 import com.tiny.ledger.controller.v1.dto.outgoing.TransactionResponse;
 import com.tiny.ledger.enums.TransactionType;
 import com.tiny.ledger.exception.TinyLedgerRuntimeException;
@@ -34,19 +35,19 @@ class TransactionServiceTest {
     void getTransactionsShouldReturnTransactionsIfAccountFound() {
         when(accountRepository.findById(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"))).thenReturn(Optional.of(TestConstants.bigAccount));
 
-        LinkedList<TransactionResponse> result = transactionService.getTransactions(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"));
+        TransactionBaseResponse result = transactionService.getTransactions(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"));
 
-        assertThat(result.size(), is(2));
-        assertThat(result.get(0).id(), is(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6")));
-        assertNotNull(result.get(0).transactionDate());
-        assertThat(result.get(0).transactionType(), is(TransactionType.DEPOSIT));
-        assertThat(result.get(0).currencyCode(), is("GBP"));
-        assertThat(result.get(0).amount(), is(BigDecimal.valueOf(999)));
-        assertThat(result.get(1).id(), is(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa7")));
-        assertNotNull(result.get(1).transactionDate());
-        assertThat(result.get(1).transactionType(), is(TransactionType.WITHDRAW));
-        assertThat(result.get(1).currencyCode(), is("GBP"));
-        assertThat(result.get(1).amount(), is(BigDecimal.valueOf(1.11)));
+        assertThat(result.transactionResponses().size(), is(2));
+        assertThat(result.transactionResponses().get(0).id(), is(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6")));
+        assertNotNull(result.transactionResponses().get(0).transactionDate());
+        assertThat(result.transactionResponses().get(0).transactionType(), is(TransactionType.DEPOSIT));
+        assertThat(result.transactionResponses().get(0).currencyCode(), is("GBP"));
+        assertThat(result.transactionResponses().get(0).amount(), is(BigDecimal.valueOf(999)));
+        assertThat(result.transactionResponses().get(1).id(), is(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa7")));
+        assertNotNull(result.transactionResponses().get(1).transactionDate());
+        assertThat(result.transactionResponses().get(1).transactionType(), is(TransactionType.WITHDRAW));
+        assertThat(result.transactionResponses().get(1).currencyCode(), is("GBP"));
+        assertThat(result.transactionResponses().get(1).amount(), is(BigDecimal.valueOf(1.11)));
     }
 
     @Test

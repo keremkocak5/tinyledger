@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tiny.ledger.config.GlobalExceptionHandler;
 import com.tiny.ledger.controller.v1.dto.incoming.TransactionRequest;
+import com.tiny.ledger.controller.v1.dto.outgoing.TransactionBaseResponse;
 import com.tiny.ledger.controller.v1.dto.outgoing.TransactionResponse;
 import com.tiny.ledger.service.impl.TransactionService;
 import com.tiny.ledger.util.TestConstants;
@@ -49,7 +50,7 @@ class TransactionControllerTest {
 
     @Test
     void getBalanceShouldReturnBalanceResponseWhenAccountServiceSuccessful() throws Exception {
-        when(transactionService.getTransactions(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"))).thenReturn(new LinkedList<>(List.of(TestConstants.transactionResponse1, TestConstants.transactionResponse2)));
+        when(transactionService.getTransactions(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"))).thenReturn(new TransactionBaseResponse(new LinkedList<>(List.of(TestConstants.transactionResponse1, TestConstants.transactionResponse2))));
 
         MvcResult result = mockMvc.perform(get("/v1/transactions/account/3fa85f64-5717-4562-b3fc-2c963f66afa6"))
                 .andExpect(status().isOk())

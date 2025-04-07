@@ -1,6 +1,7 @@
 package com.tiny.ledger.service.impl;
 
 import com.tiny.ledger.controller.v1.dto.incoming.TransactionRequest;
+import com.tiny.ledger.controller.v1.dto.outgoing.TransactionBaseResponse;
 import com.tiny.ledger.controller.v1.dto.outgoing.TransactionResponse;
 import com.tiny.ledger.enums.ErrorCode;
 import com.tiny.ledger.exception.TinyLedgerRuntimeException;
@@ -29,12 +30,12 @@ public class TransactionService implements ITransactionService {
     }
 
     @Override
-    public LinkedList<TransactionResponse> getTransactions(UUID accountId) {
+    public TransactionBaseResponse getTransactions(UUID accountId) {
         Account account = getOrElseThrow(accountId);
-        return account.getTransactions()
+        return new TransactionBaseResponse(account.getTransactions()
                 .stream()
                 .map(TransactionService::getTransactionResponse)
-                .collect(Collectors.toCollection(LinkedList::new));
+                .collect(Collectors.toCollection(LinkedList::new)));
     }
 
     private static TransactionResponse getTransactionResponse(Transaction transaction) {

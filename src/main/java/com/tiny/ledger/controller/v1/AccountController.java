@@ -23,7 +23,7 @@ public class AccountController {
 
     @GetMapping(value = "/id/{accountId}/balance")
     @Operation(summary = "Get balance of an account")
-    public BalanceResponse getBalance(@PathVariable UUID accountId) {
+    public BalanceResponse getBalance(@PathVariable @NonNull UUID accountId) {
         return accountService.getBalance(accountId);
     }
 
