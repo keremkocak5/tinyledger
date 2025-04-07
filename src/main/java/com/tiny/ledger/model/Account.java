@@ -53,15 +53,22 @@ public class Account {
 
     public Transaction addTransactionIfBalancePositive(BigDecimal amount, TransactionType transactionType) {
         synchronized (this) {
-            BigDecimal newBalance = transactionType.getAccountBalanceOperator().apply(this.balance, amount);
-            if (newBalance.compareTo(BigDecimal.ZERO) < 0) {
-                throw new TinyLedgerRuntimeException(ErrorCode.BALANCE_NEGATIVE);
-            }
-            this.balance = newBalance;
-
-            Transaction newTransaction = new Transaction(UUID.randomUUID(), amount, GBP, transactionType, Date.from(Instant.now()));
-            this.transactions.add(newTransaction);
-            return newTransaction;
+            updateBalanceIfPositive(amount, transactionType);
+            return addTransaction(amount, transactionType);
         }
+    }
+
+    private Transaction addTransaction(BigDecimal amount, TransactionType transactionType) {
+        Transaction newTransaction = new Transaction(UUID.randomUUID(), this.id, amount, GBP, transactionType, Date.from(Instant.now()));
+        this.transactions.add(newTransaction);
+        return newTransaction;
+    }
+
+    private void updateBalanceIfPositive(BigDecimal amount, TransactionType transactionType) {
+        BigDecimal newBalance = transactionType.getAccountBalanceOperator().apply(this.balance, amount);
+        if (newBalance.compareTo(BigDecimal.ZERO) < 0) {
+            throw new TinyLedgerRuntimeException(ErrorCode.BALANCE_NEGATIVE);
+        }
+        this.balance = newBalance;
     }
 }

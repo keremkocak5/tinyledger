@@ -3,6 +3,7 @@ package com.tiny.ledger.model;
 import com.tiny.ledger.enums.TransactionType;
 import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -13,9 +14,10 @@ import java.util.UUID;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
+@ActiveProfiles(profiles = "local")
 class AccountTest {
 
-    private final int ITERATION_COUNT = 1_000_000;
+    private final int ITERATION_COUNT = 2_000_000;
 
     @Test
     void addTransactionIfBalancePositiveShouldBeThreadSafe() throws InterruptedException {
@@ -23,10 +25,12 @@ class AccountTest {
         TransactionCreator transactionCreator = new TransactionCreator(account);
         Thread thread1 = new Thread(transactionCreator);
         Thread thread2 = new Thread(transactionCreator);
+
         thread1.start();
         thread2.start();
         thread1.join();
         thread2.join();
+
         assertThat(account.getBalance(), is(BigDecimal.valueOf(ITERATION_COUNT * 2)));
         assertThat(account.getTransactions().size(), is(ITERATION_COUNT * 2));
     }
