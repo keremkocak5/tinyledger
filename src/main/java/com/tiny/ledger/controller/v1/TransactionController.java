@@ -13,7 +13,7 @@ import java.util.LinkedList;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/v1/transaction")
+@RequestMapping("/v1/transactions")
 @RequiredArgsConstructor
 @Validated
 public class TransactionController {

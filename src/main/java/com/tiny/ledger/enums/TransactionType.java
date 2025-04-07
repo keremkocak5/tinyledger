@@ -11,10 +11,10 @@ public enum TransactionType {
     WITHDRAW((a, b) -> a.subtract(b));
 
     @Getter
-    private BiFunction<BigDecimal, BigDecimal, BigDecimal> transactionOperation;
+    private BiFunction<BigDecimal, BigDecimal, BigDecimal> accountBalanceOperator;
 
-    TransactionType(BiFunction<BigDecimal, BigDecimal, BigDecimal> transactionOperation) {
-        this.transactionOperation = transactionOperation;
+    TransactionType(BiFunction<BigDecimal, BigDecimal, BigDecimal> accountBalanceOperator) {
+        this.accountBalanceOperator = accountBalanceOperator;
     }
 
 }

@@ -1,6 +1,7 @@
 package com.tiny.ledger.service.impl;
 
 import com.tiny.ledger.controller.v1.dto.incoming.AccountRequest;
+import com.tiny.ledger.controller.v1.dto.outgoing.AccountResponse;
 import com.tiny.ledger.controller.v1.dto.outgoing.BalanceResponse;
 import com.tiny.ledger.enums.ErrorCode;
 import com.tiny.ledger.exception.TinyLedgerRuntimeException;
@@ -31,8 +32,9 @@ public class AccountService implements IAccountService {
     }
 
     @Override
-    public Account createAccount(AccountRequest accountRequest) {
+    public AccountResponse createAccount(AccountRequest accountRequest) {
         Account newAccount = new Account(UUID.randomUUID(), accountRequest.accountOwnerName(), BigDecimal.ZERO, GBP, new LinkedList<>(), Date.from(Instant.now()));
-        return accountRepository.saveOrUpdate(newAccount);
+        accountRepository.saveOrUpdate(newAccount);
+        return new AccountResponse(newAccount.getId(), newAccount.getAccountOwnerName());
     }
 }

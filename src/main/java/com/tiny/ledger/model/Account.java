@@ -50,9 +50,9 @@ public class Account {
     @NotEmpty
     Date creationDate;
 
-    public Transaction addTransaction(BigDecimal amount, TransactionType transactionType) {
+    public Transaction addTransactionIfBalancePositive(BigDecimal amount, TransactionType transactionType) {
         synchronized (this) {
-            BigDecimal newBalance = transactionType.getTransactionOperation().apply(this.balance, amount);
+            BigDecimal newBalance = transactionType.getAccountBalanceOperator().apply(this.balance, amount);
             if (newBalance.compareTo(BigDecimal.ZERO) < 0) {
                 throw new TinyLedgerRuntimeException(ErrorCode.BALANCE_NEGATIVE);
             }

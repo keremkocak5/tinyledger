@@ -1,6 +1,7 @@
 package com.tiny.ledger.controller.v1;
 
 import com.tiny.ledger.controller.v1.dto.incoming.AccountRequest;
+import com.tiny.ledger.controller.v1.dto.outgoing.AccountResponse;
 import com.tiny.ledger.controller.v1.dto.outgoing.BalanceResponse;
 import com.tiny.ledger.model.Account;
 import com.tiny.ledger.service.IAccountService;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/v1/account")
+@RequestMapping("/v1/accounts")
 @RequiredArgsConstructor
 @Validated
 public class AccountController {
@@ -29,7 +30,7 @@ public class AccountController {
 
     @PostMapping
     @Operation(summary = "Create an account")
-    public Account createAccount(@RequestBody @Valid @NonNull AccountRequest accountRequest) {
+    public AccountResponse createAccount(@RequestBody @Valid @NonNull AccountRequest accountRequest) {
         return accountService.createAccount(accountRequest);
     }
 
