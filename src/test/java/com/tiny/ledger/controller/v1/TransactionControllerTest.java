@@ -57,11 +57,11 @@ class TransactionControllerTest {
                 .andReturn();
 
         ObjectMapper objectMapper = new ObjectMapper();
-        LinkedList<TransactionResponse> transactionResponse = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<LinkedList<TransactionResponse>>() {
+        TransactionBaseResponse transactionResponse = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<TransactionBaseResponse>() {
         });
-        assertThat(transactionResponse.size(), is(2));
-        assertThat(transactionResponse.get(0), is(TestConstants.transactionResponse1));
-        assertThat(transactionResponse.get(1), is(TestConstants.transactionResponse2));
+        assertThat(transactionResponse.transactionResponses().size(), is(2));
+        assertThat(transactionResponse.transactionResponses().get(0), is(TestConstants.transactionResponse1));
+        assertThat(transactionResponse.transactionResponses().get(1), is(TestConstants.transactionResponse2));
         verify(transactionService, times(1)).getTransactions(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"));
     }
 
