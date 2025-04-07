@@ -7,7 +7,6 @@ import com.tiny.ledger.controller.v1.dto.incoming.AccountRequest;
 import com.tiny.ledger.controller.v1.dto.outgoing.AccountResponse;
 import com.tiny.ledger.service.impl.AccountService;
 import com.tiny.ledger.util.TestConstants;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,6 +21,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.UUID;
 
+import static com.tiny.ledger.util.TestConstants.OBJECT_MAPPER;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
@@ -41,12 +41,11 @@ class AccountControllerTest {
 
     private MockMvc mockMvc;
     private JacksonTester<AccountRequest> packageRequestJacksonTester;
-    private final static ObjectMapper objectMapper = new ObjectMapper();
 
     @BeforeEach
     public void setup() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(accountController).setControllerAdvice(GlobalExceptionHandler.class).build();
-        JacksonTester.initFields(this, objectMapper);
+        JacksonTester.initFields(this, OBJECT_MAPPER);
     }
 
     @Test

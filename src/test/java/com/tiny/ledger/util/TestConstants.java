@@ -1,5 +1,6 @@
 package com.tiny.ledger.util;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tiny.ledger.controller.v1.dto.incoming.AccountRequest;
 import com.tiny.ledger.controller.v1.dto.incoming.TransactionRequest;
 import com.tiny.ledger.controller.v1.dto.outgoing.AccountResponse;
@@ -37,4 +38,5 @@ public class TestConstants {
     public static final Account NEW_ACCOUNT = new Account(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), "Kerem Kocak", BigDecimal.TEN, "GBP", new LinkedList<>(), Date.from(Instant.now()));
     public static final Account BIG_ACCOUNT = new Account(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), "Kerem Kocak", BigDecimal.valueOf(456789.9993), "GBP", new LinkedList<>(List.of(TRANSACTION_1, TRANSACTION_2)), Date.from(Instant.now()));
 
+    public final static ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 }

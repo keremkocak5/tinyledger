@@ -24,6 +24,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
+import static com.tiny.ledger.util.TestConstants.OBJECT_MAPPER;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.*;
@@ -41,12 +42,11 @@ class TransactionControllerTest {
 
     private MockMvc mockMvc;
     private JacksonTester<TransactionRequest> packageRequestJacksonTester;
-    private final static ObjectMapper objectMapper = new ObjectMapper();
 
     @BeforeEach
     public void setup() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(transactionController).setControllerAdvice(GlobalExceptionHandler.class).build();
-        JacksonTester.initFields(this, objectMapper);
+        JacksonTester.initFields(this, OBJECT_MAPPER);
     }
 
     @Test
