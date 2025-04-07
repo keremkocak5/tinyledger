@@ -5,10 +5,8 @@ import jakarta.validation.constraints.DecimalMin;
 import lombok.NonNull;
 
 import java.math.BigDecimal;
-import java.util.UUID;
 
 public record TransactionRequest(
-        UUID accountId,
         @NonNull @DecimalMin(value = "0.0") BigDecimal amount,
         @NonNull TransactionType transactionType) {
 }

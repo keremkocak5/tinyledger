@@ -22,8 +22,8 @@ public class TransactionService implements ITransactionService {
     private final AccountRepository accountRepository;
 
     @Override
-    public TransactionResponse createTransaction(TransactionRequest transactionRequest) {
-        Account account = getOrElseThrow(transactionRequest.accountId());
+    public TransactionResponse createTransaction(UUID accountId, TransactionRequest transactionRequest) {
+        Account account = getOrElseThrow(accountId);
         Transaction transaction = account.addTransactionIfBalancePositive(transactionRequest.amount(), transactionRequest.transactionType());
         return getTransactionResponse(transaction);
     }

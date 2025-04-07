@@ -20,10 +20,10 @@ public class TransactionController {
 
     private final ITransactionService transactionService;
 
-    @PostMapping
+    @PostMapping(value = "/accountid/{accountId}")
     @Operation(summary = "Create a transaction")
-    public TransactionResponse createTransaction(@RequestBody @Valid TransactionRequest transactionRequest) {
-        return transactionService.createTransaction(transactionRequest);
+    public TransactionResponse createTransaction(@PathVariable UUID accountId, @RequestBody @Valid TransactionRequest transactionRequest) {
+        return transactionService.createTransaction(accountId, transactionRequest);
     }
 
     @GetMapping(value = "/accountid/{accountId}")

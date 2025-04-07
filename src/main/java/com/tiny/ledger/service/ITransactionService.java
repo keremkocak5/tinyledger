@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public interface ITransactionService {
 
-    TransactionResponse createTransaction(TransactionRequest transactionRequest);
+    TransactionResponse createTransaction(UUID accountId, TransactionRequest transactionRequest);
 
     LinkedList<TransactionResponse> getTransactions(UUID accountId);
 

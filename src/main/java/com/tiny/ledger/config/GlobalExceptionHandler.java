@@ -14,7 +14,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {TinyLedgerRuntimeException.class})
     protected ProblemDetail handleException(TinyLedgerRuntimeException e) {
-        log.warn("TinyLedgerRuntimeException {}",  e.getErrorCode().getErrorMessage());
+        log.warn("TinyLedgerRuntimeException {}", e.getErrorCode().getErrorMessage());
         return ProblemDetail.forStatusAndDetail(e.getErrorCode().getHttpStatus(), e.getErrorCode().getErrorMessage());
     }
 
