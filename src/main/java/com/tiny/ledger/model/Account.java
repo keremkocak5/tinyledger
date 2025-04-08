@@ -50,11 +50,19 @@ public class Account {
     private final Date creationDate;
 
     public Transaction addTransactionIfBalancePositive(BigDecimal amount, TransactionType transactionType) {
+        amount = roundAmountThrowIfZero(amount);
         synchronized (this) {
-            amount = ROUNDING_FUNCTION.apply(amount);
             updateBalanceIfPositive(amount, transactionType);
             return addTransaction(amount, transactionType);
         }
+    }
+
+    private static BigDecimal roundAmountThrowIfZero(BigDecimal amount) {
+        BigDecimal afterRound = ROUNDING_FUNCTION.apply(amount);
+        if (BigDecimal.ZERO.compareTo(afterRound) == 0) {
+            throw new TinyLedgerRuntimeException(ErrorCode.AMOUNT_ZERO);
+        }
+        return afterRound;
     }
 
     private Transaction addTransaction(BigDecimal amount, TransactionType transactionType) {

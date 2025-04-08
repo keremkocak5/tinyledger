@@ -132,11 +132,7 @@ class TransactionServiceTest {
         Account account = new Account(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), "Kerem Kocak", BigDecimal.ZERO, "GBP", new LinkedList<>(), Date.from(Instant.now()));
         when(accountRepository.findById(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"))).thenReturn(Optional.of(account));
 
-        TransactionResponse result = transactionService.createTransaction(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), new TransactionRequest(BigDecimal.valueOf(0), TransactionType.DEPOSIT));
-        assertThat(result.amount(), is(BigDecimal.valueOf(0.00).setScale(2, RoundingMode.HALF_UP)));
-        assertThat(account.getBalance(), is(BigDecimal.valueOf(0.00).setScale(2, RoundingMode.HALF_UP)));
-
-        result = transactionService.createTransaction(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), new TransactionRequest(BigDecimal.valueOf(0.10), TransactionType.DEPOSIT));
+        TransactionResponse result = transactionService.createTransaction(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), new TransactionRequest(BigDecimal.valueOf(0.10), TransactionType.DEPOSIT));
         assertThat(result.amount(), is(BigDecimal.valueOf(0.10).setScale(2, RoundingMode.HALF_UP)));
         assertThat(account.getBalance(), is(BigDecimal.valueOf(0.10).setScale(2, RoundingMode.HALF_UP)));
 
@@ -183,6 +179,17 @@ class TransactionServiceTest {
         result = transactionService.createTransaction(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), new TransactionRequest(BigDecimal.valueOf(1.00999), TransactionType.DEPOSIT));
         assertThat(result.amount(), is(BigDecimal.valueOf(1.01)));
         assertThat(account.getBalance(), is(BigDecimal.valueOf(7.93)));
+    }
+
+    @Test
+    void createTransactionShouldThrowExceptionWhenAmountLeadsZero() {
+        Account account = new Account(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), "Kerem Kocak", BigDecimal.ONE, "GBP", new LinkedList<>(List.of(TestConstants.TRANSACTION_1, TestConstants.TRANSACTION_2)), Date.from(Instant.now()));
+        when(accountRepository.findById(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"))).thenReturn(Optional.of(account));
+
+        assertThrows(TinyLedgerRuntimeException.class, () -> transactionService.createTransaction(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), new TransactionRequest(BigDecimal.valueOf(0.00001), TransactionType.DEPOSIT)));
+
+        assertThat(account.getTransactions().size(), is(2));
+        assertThat(account.getBalance(), is(BigDecimal.valueOf(1)));
     }
 
 }

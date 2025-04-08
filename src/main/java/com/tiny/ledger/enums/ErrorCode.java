@@ -8,7 +8,8 @@ public enum ErrorCode {
 
     BALANCE_NEGATIVE("I0001", "Balance cannot be negative", HttpStatus.NOT_ACCEPTABLE),
     ACCOUNT_NOT_FOUND("I0002", "Account not found", HttpStatus.NOT_FOUND),
-    DUPLICATE_UUID("I0003", "UUID already generated, please try again", HttpStatus.INTERNAL_SERVER_ERROR);
+    DUPLICATE_UUID("I0003", "UUID already generated, please try again", HttpStatus.INTERNAL_SERVER_ERROR),
+    AMOUNT_ZERO("I0004", "Amount cannot be zero", HttpStatus.NOT_ACCEPTABLE);
 
     private final String errorCode;
     private final String errorMessage;
