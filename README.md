@@ -43,6 +43,8 @@ Only GBP is supported as a currency code.
 
 Rounding mode HALF_UP is applied while persisting amounts.
 
+To avoid overflow, a maximum amount per transaction should be set, but hasn't been implemented in this project.
+
 
 # API Documentation
 
