@@ -38,8 +38,10 @@ http://localhost:8080/ledger/swagger-ui/index.html
 
 ## Dependencies and Assumptions
 Due to its in-memory database, this app is not horizontally scalable.
+
 Only GBP is supported as a currency code.
-User can enter only two decimal places for transaction amounts.
+
+Rounding mode HALF_UP is applied while persisting amounts.
 
 
 # API Documentation
