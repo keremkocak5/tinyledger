@@ -1,5 +1,6 @@
 package com.tiny.ledger.service.impl;
 
+import com.tiny.ledger.controller.v1.dto.incoming.TransactionRequest;
 import com.tiny.ledger.controller.v1.dto.outgoing.TransactionBaseResponse;
 import com.tiny.ledger.controller.v1.dto.outgoing.TransactionResponse;
 import com.tiny.ledger.enums.TransactionType;
@@ -124,6 +125,64 @@ class TransactionServiceTest {
         when(accountRepository.findById(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"))).thenReturn(Optional.empty());
 
         assertThrows(TinyLedgerRuntimeException.class, () -> transactionService.createTransaction(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), TestConstants.TRANSACTION_REQUEST_WITHDRAW));
+    }
+
+    @Test
+    void createTransactionShouldRoundUpCorrectlyForMultipleDeposit() {
+        Account account = new Account(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), "Kerem Kocak", BigDecimal.ZERO, "GBP", new LinkedList<>(), Date.from(Instant.now()));
+        when(accountRepository.findById(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"))).thenReturn(Optional.of(account));
+
+        TransactionResponse result = transactionService.createTransaction(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), new TransactionRequest(BigDecimal.valueOf(0), TransactionType.DEPOSIT));
+        assertThat(result.amount(), is(BigDecimal.valueOf(0.00).setScale(2, RoundingMode.HALF_UP)));
+        assertThat(account.getBalance(), is(BigDecimal.valueOf(0.00).setScale(2, RoundingMode.HALF_UP)));
+
+        result = transactionService.createTransaction(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), new TransactionRequest(BigDecimal.valueOf(0.10), TransactionType.DEPOSIT));
+        assertThat(result.amount(), is(BigDecimal.valueOf(0.10).setScale(2, RoundingMode.HALF_UP)));
+        assertThat(account.getBalance(), is(BigDecimal.valueOf(0.10).setScale(2, RoundingMode.HALF_UP)));
+
+        result = transactionService.createTransaction(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), new TransactionRequest(BigDecimal.valueOf(0.100), TransactionType.DEPOSIT));
+        assertThat(result.amount(), is(BigDecimal.valueOf(0.10).setScale(2, RoundingMode.HALF_UP)));
+        assertThat(account.getBalance(), is(BigDecimal.valueOf(0.20).setScale(2, RoundingMode.HALF_UP)));
+
+        result = transactionService.createTransaction(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), new TransactionRequest(BigDecimal.valueOf(0.105), TransactionType.DEPOSIT));
+        assertThat(result.amount(), is(BigDecimal.valueOf(0.11)));
+        assertThat(account.getBalance(), is(BigDecimal.valueOf(0.31)));
+
+        result = transactionService.createTransaction(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), new TransactionRequest(BigDecimal.valueOf(0.109), TransactionType.DEPOSIT));
+        assertThat(result.amount(), is(BigDecimal.valueOf(0.11)));
+        assertThat(account.getBalance(), is(BigDecimal.valueOf(0.42)));
+
+        result = transactionService.createTransaction(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), new TransactionRequest(BigDecimal.valueOf(0.99), TransactionType.DEPOSIT));
+        assertThat(result.amount(), is(BigDecimal.valueOf(0.99)));
+        assertThat(account.getBalance(), is(BigDecimal.valueOf(1.41)));
+
+        result = transactionService.createTransaction(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), new TransactionRequest(BigDecimal.valueOf(0.5), TransactionType.DEPOSIT));
+        assertThat(result.amount(), is(BigDecimal.valueOf(0.50).setScale(2, RoundingMode.HALF_UP)));
+        assertThat(account.getBalance(), is(BigDecimal.valueOf(1.91)));
+
+        result = transactionService.createTransaction(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), new TransactionRequest(BigDecimal.valueOf(0.9989), TransactionType.DEPOSIT));
+        assertThat(result.amount(), is(BigDecimal.valueOf(1.00).setScale(2, RoundingMode.HALF_UP)));
+        assertThat(account.getBalance(), is(BigDecimal.valueOf(2.91)));
+
+        result = transactionService.createTransaction(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), new TransactionRequest(BigDecimal.valueOf(0.999), TransactionType.DEPOSIT));
+        assertThat(result.amount(), is(BigDecimal.valueOf(1.00).setScale(2, RoundingMode.HALF_UP)));
+        assertThat(account.getBalance(), is(BigDecimal.valueOf(3.91)));
+
+        result = transactionService.createTransaction(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), new TransactionRequest(BigDecimal.valueOf(1.000), TransactionType.DEPOSIT));
+        assertThat(result.amount(), is(BigDecimal.valueOf(1.00).setScale(2, RoundingMode.HALF_UP)));
+        assertThat(account.getBalance(), is(BigDecimal.valueOf(4.91)));
+
+        result = transactionService.createTransaction(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), new TransactionRequest(BigDecimal.valueOf(1.001), TransactionType.DEPOSIT));
+        assertThat(result.amount(), is(BigDecimal.valueOf(1.00).setScale(2, RoundingMode.HALF_UP)));
+        assertThat(account.getBalance(), is(BigDecimal.valueOf(5.91)));
+
+        result = transactionService.createTransaction(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), new TransactionRequest(BigDecimal.valueOf(1.009), TransactionType.DEPOSIT));
+        assertThat(result.amount(), is(BigDecimal.valueOf(1.01)));
+        assertThat(account.getBalance(), is(BigDecimal.valueOf(6.92)));
+
+        result = transactionService.createTransaction(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), new TransactionRequest(BigDecimal.valueOf(1.00999), TransactionType.DEPOSIT));
+        assertThat(result.amount(), is(BigDecimal.valueOf(1.01)));
+        assertThat(account.getBalance(), is(BigDecimal.valueOf(7.93)));
     }
 
 }
