@@ -31,26 +31,26 @@ mvn spring-boot:run
 
 ## Accessing the APIs
 
-Swagger is enabled.
+Swagger is enabled. 🚀
 
 http://localhost:8080/ledger/swagger-ui/index.html
 
-## Instructions On Testing
-1. Create a new account by calling account-controller's "Create an account" API.
-2. Check your balance by calling account-controller's "Get balance of an account" API. The balance should be initially zero.
-3. Check your transaction history by calling transaction-controller's "Get transactions of an account" API. The transaction list should be initially empty.
-4. Make a new DEPOSIT transaction by calling transaction-controller's "Create transaction" API. Mind that the amount given will scale for two decimal places.  
-5. Make a new WITHDRAW transaction by calling transaction-controller's "Create transaction" API. Mind that the amount given will scale for two decimal places. You cannot withdraw more than the account balance
-6. Check the transaction log and balance APIs the see the transactions and current balance.
+## Instructions On Testing 
+1. Create a new account by calling account-controller's "Create an account" API. Don't forget to store your account id somewhere 🧋
+2. Check your balance by calling account-controller's "Get balance of an account" API. The balance should be initially zero. 0️⃣
+3. Check your transaction history by calling transaction-controller's "Get transactions of an account" API. The transaction list should be initially empty. 🪹
+4. Make a new DEPOSIT transaction by calling transaction-controller's "Create transaction" API. Mind that the amount given will scale for two decimal places.  💵
+5. Make a new WITHDRAW transaction by calling transaction-controller's "Create transaction" API. Mind that the amount given will scale for two decimal places. You cannot withdraw more than the account balance 🤖
+6. Check the transaction log and balance APIs the see the transactions and current balance. ⚖️
 
 ## Dependencies and Assumptions
-Due to its in-memory database, this app is not horizontally scalable.
+Due to its in-memory database, this app is not horizontally scalable. 🧣
 
-Only GBP is supported as a currency code.
+Only GBP is supported as a currency code. 💱
 
 Rounding mode HALF_UP is applied while persisting amounts.
 
-To avoid overflow, a maximum amount per transaction should be set, but hasn't been implemented in this project.
+To avoid overflow, a maximum amount per transaction should be set, but hasn't been implemented in this project. ▶️
 
 
 # API Documentation
