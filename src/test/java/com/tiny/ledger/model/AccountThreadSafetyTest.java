@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.DisabledIf;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Date;
 import java.time.Instant;
 import java.util.LinkedList;
@@ -33,7 +34,7 @@ class AccountThreadSafetyTest {
         thread1.join();
         thread2.join();
 
-        assertThat(account.getBalance(), is(BigDecimal.valueOf(ITERATION_COUNT * 2)));
+        assertThat(account.getBalance(), is(BigDecimal.valueOf(ITERATION_COUNT * 2).setScale(2, RoundingMode.HALF_UP)));
         assertThat(account.getTransactions().size(), is(ITERATION_COUNT * 2));
     }
 

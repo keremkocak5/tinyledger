@@ -77,11 +77,11 @@ class TransactionControllerTest {
 
     @Test
     void createTransactionShouldReturnTransactionResponseWhenTransactionServiceSucceeds() throws Exception {
-        when(transactionService.createTransaction(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), TestConstants.TRANSACTION_REQUEST_DEPOSIT)).thenReturn(TestConstants.TRANSACTION_RESPONSE_1);
+        when(transactionService.createTransaction(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), TestConstants.TRANSACTION_REQUEST_DEPOSIT_THIRD_DECIMAL_9)).thenReturn(TestConstants.TRANSACTION_RESPONSE_1);
 
         MvcResult result = mockMvc.perform(post("/v1/transactions/account/3fa85f64-5717-4562-b3fc-2c963f66afa6")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(packageRequestJacksonTester.write(TestConstants.TRANSACTION_REQUEST_DEPOSIT).getJson()))
+                        .content(packageRequestJacksonTester.write(TestConstants.TRANSACTION_REQUEST_DEPOSIT_THIRD_DECIMAL_9).getJson()))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -89,7 +89,7 @@ class TransactionControllerTest {
         TransactionResponse transactionResponse = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {
         });
         assertThat(transactionResponse, is(TestConstants.TRANSACTION_RESPONSE_1));
-        verify(transactionService, times(1)).createTransaction(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), TestConstants.TRANSACTION_REQUEST_DEPOSIT);
+        verify(transactionService, times(1)).createTransaction(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), TestConstants.TRANSACTION_REQUEST_DEPOSIT_THIRD_DECIMAL_9);
     }
 
     @Test

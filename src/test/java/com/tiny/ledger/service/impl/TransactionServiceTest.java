@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.Instant;
 import java.util.*;
 
@@ -58,21 +59,39 @@ class TransactionServiceTest {
     }
 
     @Test
-    void createTransactionShouldReturnTransactionResponseWhenBalanceLeadsPositive() {
+    void createTransactionShouldReturnTransactionResponseWhenBalanceLeadsPositiveRoundingDown() {
         Account account = new Account(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), "Kerem Kocak", BigDecimal.valueOf(20.445), "GBP", new LinkedList<>(List.of(TestConstants.TRANSACTION_1, TestConstants.TRANSACTION_2)), Date.from(Instant.now()));
         when(accountRepository.findById(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"))).thenReturn(Optional.of(account));
 
-        TransactionResponse result = transactionService.createTransaction(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), TestConstants.TRANSACTION_REQUEST_DEPOSIT);
+        TransactionResponse result = transactionService.createTransaction(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), TestConstants.TRANSACTION_REQUEST_DEPOSIT_THIRD_DECIMAL_4);
 
         assertNotNull(result);
-        assertThat(result.amount(), is(BigDecimal.valueOf(55.444)));
+        assertThat(result.amount(), is(BigDecimal.valueOf(55.44)));
         assertThat(result.transactionType(), is(TransactionType.DEPOSIT));
         assertThat(result.currencyCode(), is("GBP"));
         assertNotNull(result.id());
         assertNotNull(result.transactionDate());
 
         assertThat(account.getTransactions().size(), is(3));
-        assertThat(account.getBalance(), is(BigDecimal.valueOf(75.889)));
+        assertThat(account.getBalance(), is(BigDecimal.valueOf(75.885)));
+    }
+
+    @Test
+    void createTransactionShouldReturnTransactionResponseWhenBalanceLeadsPositiveRoundingUp() {
+        Account account = new Account(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), "Kerem Kocak", BigDecimal.valueOf(20.445), "GBP", new LinkedList<>(List.of(TestConstants.TRANSACTION_1, TestConstants.TRANSACTION_2)), Date.from(Instant.now()));
+        when(accountRepository.findById(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"))).thenReturn(Optional.of(account));
+
+        TransactionResponse result = transactionService.createTransaction(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), TestConstants.TRANSACTION_REQUEST_DEPOSIT_THIRD_DECIMAL_9);
+
+        assertNotNull(result);
+        assertThat(result.amount(), is(BigDecimal.valueOf(55.45)));
+        assertThat(result.transactionType(), is(TransactionType.DEPOSIT));
+        assertThat(result.currencyCode(), is("GBP"));
+        assertNotNull(result.id());
+        assertNotNull(result.transactionDate());
+
+        assertThat(account.getTransactions().size(), is(3));
+        assertThat(account.getBalance(), is(BigDecimal.valueOf(75.895)));
     }
 
     @Test
@@ -94,9 +113,9 @@ class TransactionServiceTest {
         TransactionResponse result = transactionService.createTransaction(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), TestConstants.TRANSACTION_REQUEST_WITHDRAW);
 
         assertThat(account.getTransactions().size(), is(3));
-        assertThat(account.getBalance(), is(BigDecimal.valueOf(0.0)));
+        assertThat(account.getBalance(), is(BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP)));
 
-        assertThat(result.amount(), is(BigDecimal.valueOf(1.1)));
+        assertThat(result.amount(), is(BigDecimal.valueOf(1.1).setScale(2, RoundingMode.HALF_UP)));
         assertThat(result.transactionType(), is(TransactionType.WITHDRAW));
     }
 

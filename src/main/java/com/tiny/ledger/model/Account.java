@@ -18,6 +18,7 @@ import java.util.LinkedList;
 import java.util.UUID;
 
 import static com.tiny.ledger.util.Constants.GBP;
+import static com.tiny.ledger.util.Constants.ROUNDING_FUNCTION;
 
 @Getter
 @AllArgsConstructor
@@ -50,6 +51,7 @@ public class Account {
 
     public Transaction addTransactionIfBalancePositive(BigDecimal amount, TransactionType transactionType) {
         synchronized (this) {
+            amount = ROUNDING_FUNCTION.apply(amount);
             updateBalanceIfPositive(amount, transactionType);
             return addTransaction(amount, transactionType);
         }
@@ -68,4 +70,5 @@ public class Account {
         }
         this.balance = newBalance;
     }
+
 }
