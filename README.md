@@ -35,6 +35,13 @@ Swagger is enabled.
 
 http://localhost:8080/ledger/swagger-ui/index.html
 
+## Instructions On Testing
+1. Create a new account by calling account-controller's "Create an account" API.
+2. Check your balance by calling account-controller's "Get balance of an account" API. The balance should be initially zero.
+3. Check your transaction history by calling transaction-controller's "Get transactions of an account" API. The transaction list should be initially empty.
+4. Make a new DEPOSIT transaction by calling transaction-controller's "Create transaction" API. Mind that the amount given will scale for two decimal places.  
+5. Make a new WITHDRAW transaction by calling transaction-controller's "Create transaction" API. Mind that the amount given will scale for two decimal places. You cannot withdraw more than the account balance
+6. Check the transaction log and balance APIs the see the transactions and current balance.
 
 ## Dependencies and Assumptions
 Due to its in-memory database, this app is not horizontally scalable.
